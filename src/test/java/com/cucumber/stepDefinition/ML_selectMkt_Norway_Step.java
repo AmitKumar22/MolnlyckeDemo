@@ -7,7 +7,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-public class ML_SelectMkt_Norway_Step {
+public class ML_selectMkt_Norway_Step {
 
 	ML_SelectMkt_Norway_Logic selectmktnorway;
 

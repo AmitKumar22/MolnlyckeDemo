@@ -5,7 +5,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-public class ML_AboutUs_Step {
+public class ML_aboutUs_Step {
 
 	ML_AboutUs_Logic aboutUs;
 
