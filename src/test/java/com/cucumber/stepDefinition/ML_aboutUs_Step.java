@@ -1,6 +1,10 @@
 package com.cucumber.stepDefinition;
 
 import com.cucumber.businessLogic.ML_AboutUs_Logic;
+import com.cucumber.utilityCommon.CommonMethods;
+
+import cucumber.api.Scenario;
+import cucumber.api.java.After;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -30,6 +34,11 @@ public class ML_aboutUs_Step {
 		aboutUs.verifyGlobalCompanySubMenu(arg5);
 		aboutUs.verifyPartneringSubMenu(arg6);
 		aboutUs.verifyBuildingClinicalSubMenu(arg7);
+	}
+
+	@After
+	public static void embedScreenshot(Scenario scenario) throws Exception {
+		CommonMethods.onFailureSnapshot(scenario);
 	}
 
 }

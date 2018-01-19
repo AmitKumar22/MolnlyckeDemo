@@ -1,16 +1,27 @@
 package com.cucumber.utilityCommon;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import org.codehaus.plexus.util.FileUtils;
 import org.junit.Assert;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.JavascriptExecutor;
+
+import cucumber.api.Scenario;
 
 public class CommonMethods {
 	protected static WebDriver driver;
@@ -69,7 +80,7 @@ public class CommonMethods {
 		}
 	}
 
-	// ------------ Select value from drop down for milliseconds -----------
+	// ------------ Select value from drop down -----------
 	public static void selectValueFromDropDown(List<WebElement> ddn_LeaveType, String leaveType) {
 		try {
 			for (WebElement e : ddn_LeaveType) {
@@ -102,10 +113,84 @@ public class CommonMethods {
 		Actions builder = new Actions(driver);
 		builder.moveToElement(obj).build().perform();
 	}
-	
+
 	// ----------------- Scroll till element -----------------------------------
 	public static void scrollingToElementofAPage(WebElement obj) {
-						((JavascriptExecutor) driver).executeScript(
-                "arguments[0].scrollIntoView();", obj);
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", obj);
 	}
+
+	// ----------------- Take snapshot on Failure ------------------------------
+	public static void onFailureSnapshot(Scenario scenario) throws IOException {
+		if (scenario.isFailed()) {
+			takeSnapshot(scenario);
+			driver.quit();
+		}
+	}
+
+	// ---------------------- Take snapShot -----------------------------------
+	public static void takeSnapshot(Scenario scenario) throws IOException {
+		try {
+			File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+			String testName = scenario.getName();
+			FileUtils.copyFile(screenshot,
+					new File("target/failureSnapshots/" + testName + "_" + timeStamp() + ".png"));
+		} catch (WebDriverException wde) {
+			System.err.println(wde.getMessage());
+		} catch (ClassCastException cce) {
+			cce.printStackTrace();
+		}
+	}
+
+	// --------------- Getting Time stamp -------------------------------------
+	public static String timeStamp() {
+		return new SimpleDateFormat("dd_MM_yyyy__HH_mm_ss").format(new Date());
+	}
+
+	// -------------- Delete Directory/Folder ---------------------------------
+	public static void deleteDirectory(String path) throws IOException {
+		File dir = new File(path);
+		if (!dir.exists()) {
+			System.out.println("----------- Directory does not exist!!!! --------------");
+		} else {
+			deleteFiles(dir);
+		}
+	}
+
+	// ------------- Delete Files --------------------------------------------
+	public static void deleteFiles(File file) throws IOException {
+		if (file.isDirectory()) {
+
+			// directory is empty, then delete it
+			if (file.list().length == 0) {
+
+				file.delete();
+				System.out.println("Directory is deleted : " + file.getAbsolutePath());
+
+			} else {
+
+				// list all the directory contents
+				String files[] = file.list();
+
+				for (String temp : files) {
+					// construct the file structure
+					File fileDelete = new File(file, temp);
+
+					// recursive delete
+					deleteFiles(fileDelete);
+				}
+
+				// check the directory again, if empty then delete it
+				if (file.list().length == 0) {
+					file.delete();
+					System.out.println("Directory is deleted : " + file.getAbsolutePath());
+				}
+			}
+
+		} else {
+			// if file, then delete it
+			file.delete();
+			System.out.println("File is deleted : " + file.getAbsolutePath());
+		}
+	}
+
 }
