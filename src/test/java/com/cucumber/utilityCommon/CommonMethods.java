@@ -25,9 +25,12 @@ import cucumber.api.Scenario;
 
 public class CommonMethods {
 	protected static WebDriver driver;
-
+	public static String br=null;
+	//-------------------------------------------------------------------
 	// ------------ Open the browser and launch the application ---------
+	//-------------------------------------------------------------------
 	public static void launchBrowser(String browser, String url) {
+		br=browser.toUpperCase();
 		switch (browser.toLowerCase()) {
 		case "firefox":
 		case "ff":
@@ -38,7 +41,7 @@ public class CommonMethods {
 			break;
 		case "internet explorer":
 		case "ie":
-			// System.setProperty("webdriver.ie.driver", "path_here");
+			//System.setProperty("webdriver.ie.driver", "chromedriver.exe");
 			driver = new InternetExplorerDriver();
 			break;
 		case "chrome":
@@ -123,6 +126,7 @@ public class CommonMethods {
 	public static void onFailureSnapshot(Scenario scenario) throws IOException {
 		if (scenario.isFailed()) {
 			takeSnapshot(scenario);
+			driver.close();
 			driver.quit();
 		}
 	}
@@ -133,7 +137,7 @@ public class CommonMethods {
 			File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 			String testName = scenario.getName();
 			FileUtils.copyFile(screenshot,
-					new File("target/failureSnapshots/" + testName + "_" + timeStamp() + ".png"));
+					new File("target/failureSnapshots/" + br + "_"+ testName + "_" + timeStamp() + ".png"));
 		} catch (WebDriverException wde) {
 			System.err.println(wde.getMessage());
 		} catch (ClassCastException cce) {

@@ -7,7 +7,7 @@ public class ML_MainPage_Logic extends CommonMethods {
 
 	public ML_MainPage_Logic clickIagree() {
 		CommonMethods.waitForMilliSeconds("5");
-		ML_MainPage_PageObjects.btn_Iagree(driver).click();
+		//ML_MainPage_PageObjects.btn_Iagree(driver).click();
 		return new ML_MainPage_Logic();
 	}
 

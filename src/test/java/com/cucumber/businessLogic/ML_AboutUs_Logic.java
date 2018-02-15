@@ -10,7 +10,6 @@ public class ML_AboutUs_Logic extends CommonMethods {
 		CommonMethods.waitForMilliSeconds("2");
 		System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxx Verify sub menu xxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 		CommonMethods.mouseOverElement(ML_MainPage_PageObjects.mnu_AboutUs(driver));
-		CommonMethods.waitForMilliSeconds("2");
 		return new ML_AboutUs_Logic();
 	}
 

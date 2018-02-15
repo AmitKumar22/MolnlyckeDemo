@@ -1,7 +1,6 @@
 package com.cucumber.stepDefinition;
 
 import com.cucumber.businessLogic.ML_Search_Logic;
-
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -15,7 +14,7 @@ public class ML_search_Step {
 		search = new ML_Search_Logic();
 		search.clickSearchLink();
 	}
-	
+
 	@Then("^Verify heading \"([^\"]*)\" on search page$")
 	public void verify_heading_on_search_page(String arg1) throws Exception {
 		search.verifyImLookingForHeading(arg1);
